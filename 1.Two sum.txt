@@ -1,3 +1,5 @@
+Solution 1:Hash Table
+
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -10,6 +12,27 @@ public:
             if(out.count(left) && out[left]!=i){
                 return {i,out[left]};
             }
+        }
+        return {};
+    }
+};
+
+Solution 2:Two Pointer
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<pair<int,int>> output;
+        for(int i=0;i<nums.size();i++){
+            output.push_back(make_pair(nums[i],i));
+        }
+        sort(output.begin(),output.end());
+        int left=0;
+        int right=nums.size()-1;
+        while(left<right){
+            if(output[left].first+output[right].first==target) return {output[left].second,output[right].second};
+            else if(output[left].first+output[right].first<target) left++;
+            else if(output[left].first+output[right].first>target) right--;
         }
         return {};
     }

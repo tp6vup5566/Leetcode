@@ -1,0 +1,45 @@
+Solution 1:Dfs
+
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> result;
+        vector<int> combination;
+        dfs(n, k, 1, combination, result);
+        return result;
+    }
+    
+    void dfs(int n, int k, int start, vector<int>& combination, vector<vector<int>>& result) {
+        if (combination.size() == k) {
+            result.push_back(combination);
+            return;
+        }
+        
+        for (int i = start; i <= n; ++i) {
+            combination.push_back(i);
+            dfs(n, k, i + 1, combination, result);
+            combination.pop_back();
+        }
+    }
+};
+
+Solution 2:Iterative
+
+class Solution {
+public:
+	vector<vector<int>> combine(int n, int k) {
+		vector<vector<int>> result;
+		int i = 0;
+		vector<int> p(k, 0);
+		while (i >= 0) {
+			p[i]++;
+			if (p[i] > n) --i;
+			else if (i == k - 1) result.push_back(p);
+			else {
+			    ++i;
+			    p[i] = p[i - 1];
+			}
+		}
+		return result;
+	}
+};

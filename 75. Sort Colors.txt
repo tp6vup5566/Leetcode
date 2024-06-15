@@ -1,4 +1,4 @@
-Solution 1:Two pointer
+Solution 1:Three pointer
 
 class Solution {
 public:

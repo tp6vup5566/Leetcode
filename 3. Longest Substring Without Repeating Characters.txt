@@ -1,0 +1,41 @@
+Solution 1:set(original)
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int maxLength=0;
+        set<char> tmp;
+        int start=0;
+        for(int i=0;i<s.length();i++){
+            for(int j=i;j<s.length();j++){
+                if(tmp.count(s[j])){ 
+                    tmp.clear();
+                    break;
+                }
+                tmp.insert(s[j]);
+                maxLength=max(maxLength,(int)tmp.size());                
+            }
+        }
+        return maxLength;
+    }
+};
+
+Solution 2:Two pointer, Hash table
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char,int> map;
+        int start=0;
+        int maxLength=0;
+        for(int i=0;i<s.length();i++){
+            map[s[i]]++;
+            while(map[s[i]]>1){
+                map[s[start]]--;
+                start++;
+            }
+            maxLength=max(maxLength,i-start+1);
+        }
+        return maxLength;
+    }
+};

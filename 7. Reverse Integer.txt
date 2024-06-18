@@ -1,0 +1,31 @@
+Solution 1
+
+class Solution {
+public:
+    int reverse(int x) {
+        int ans=0;
+        while(x!=0){
+            if(ans>INT_MAX/10||ans<INT_MIN/10) return 0;
+            ans=ans*10+x%10;
+            x=x/10;
+        }
+        return ans;
+    }
+};
+
+
+Solution 2 (不會過)
+
+class Solution {
+public:
+    int reverse(int x) {
+        int ans=0;
+        while(x!=0){
+            int newans=ans*10+x%10;
+            if(newans/10!=ans) return 0;
+            ans=newans;
+            x=x/10;
+        }
+        return ans;
+    }
+};

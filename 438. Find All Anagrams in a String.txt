@@ -1,0 +1,27 @@
+Solution 1 : Sliding Window
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> mapP(26,0);
+        vector<int> mapS(26,0);
+        //start為sliding的起點，i為終點
+        int start=0;
+        vector<int> ans;
+        if(s.size() < p.size()) return {};
+        for(int i=0;i<p.length();i++){
+            mapP[p[i]-'a']++;
+            mapS[s[i]-'a']++;
+        }
+        if(mapP==mapS) ans.push_back(0); //初始化
+        for(int i=p.length();i<s.length();i++){
+            mapS[s[start]-'a']--;
+            mapS[s[i]-'a']++;
+            start++;
+            if(mapP==mapS){
+                ans.push_back(start);
+            }
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        //掃描列
+        for(int i=0;i<9;i++){
+            vector<int> map(128,0);
+            for(int j=0;j<9;j++){
+                map[board[i][j]]++;
+                if(map[board[i][j]]>1 && board[i][j]!='.') return false;
+            }   
+        }
+        //掃描行
+        for(int i=0;i<9;i++){
+            vector<int> map(128,0);
+            for(int j=0;j<9;j++){
+                map[board[j][i]]++;
+                if(map[board[j][i]]>1 && board[j][i]!='.') return false;
+            }   
+        }
+        //掃描3x3
+        for(int i=0;i<9;i++){
+            vector<int> map(128,0);
+            for(int j=0;j<3;j++){
+                for(int k=0;k<3;k++){
+                    map[board[j+3*(i/3)][k+3*(i%3)]]++;
+                    if(map[board[j+3*(i/3)][k+3*(i%3)]]>1 && board[j+3*(i/3)][k+3*(i%3)]!='.') return false;
+                }
+            }
+        }
+        return true;
+    }
+};

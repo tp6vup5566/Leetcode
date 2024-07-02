@@ -2,8 +2,8 @@ class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
         int n=nums.size();
-        vector<int> ans(n);
-        vector<int> left(n);
+        vector<int> ans(n);	//ans陣列的第i個元素=left*right
+        vector<int> left(n);	//left[i]=nums[0]~nums[i-1]的乘積
         vector<int> right(n);
         left[0]=1;
         for(int i=1;i<n;i++){

@@ -1,0 +1,18 @@
+Solution 1:Sliding Window + Multiset 
+
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        int left = 0, right;
+        multiset<int> m;
+        for (right = 0; right < nums.size(); ++right) {
+            m.insert(nums[right]);
+            if (*m.rbegin() - *m.begin() > limit) //rbegin()會指向最後一個元素，end()會指向最後一個元素的後面一個。
+                m.erase(m.find(nums[left++]));
+        }
+        return right - left;
+    }
+};
+
+概念:用multiset來維護sliding window，每次新增右邊的元素就檢查左邊的元素是否<=limit。
+

@@ -17,7 +17,7 @@ public:
         
         for (int i = start; i <= n; ++i) {
             combination.push_back(i);
-            dfs(n, k, i + 1, combination, result);
+            dfs(n, k, i + 1, combination, result);	//一次遞迴時應該從 i + 1 開始選擇，這樣可以確保不會重複選擇相同的數字，並且保持組合中的數字按升序排列。
             combination.pop_back();
         }
     }

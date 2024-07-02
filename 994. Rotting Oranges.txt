@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        queue<pair<int, int>> orange;
+        
+        // 將所有腐爛橘子的座標加入隊列
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 2) {
+                    orange.push({i, j});
+                }
+            }
+        }
+        
+        int timer = 0;
+        int direction[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        
+        // BFS遍歷腐爛橘子
+        while(!orange.empty()) {
+            int size = orange.size();
+            bool rot = false; // 判斷這一層是否有橘子腐爛
+            for(int i = 0; i < size; i++) {
+                auto orange_tmp = orange.front();
+                orange.pop();
+                for(int k = 0; k < 4; k++) {
+                    int newX = orange_tmp.first + direction[k][0];
+                    int newY = orange_tmp.second + direction[k][1];
+                    if(newX >= 0 && newX < n && newY >= 0 && newY < m && grid[newX][newY] == 1) {
+                        grid[newX][newY] = 2;
+                        orange.push({newX, newY});
+                        rot = true; // 有橘子腐爛
+                    }
+                }
+            }
+            if(rot) timer++;
+        }
+        
+        // 最後檢查是否還有新鮮橘子
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 1) return -1;
+            }
+        }
+        return timer;
+    }
+};

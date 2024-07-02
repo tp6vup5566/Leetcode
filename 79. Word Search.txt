@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool ans=false;
+    bool exist(vector<vector<char>>& board, string word) {
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
+                if(board[i][j]==word[0]){
+                    vector<vector<int>> visted(board.size(),vector<int>(board[0].size(),0));
+                    dfs(board,word,0,i,j,visted);
+                }
+            }
+        }
+        return ans;
+    }
+
+    void dfs(vector<vector<char>>& board,string word,int start,int i,int j,vector<vector<int>>& visted){
+        int direction[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+        if(ans==true) return;
+        if(i>=0 && i<board.size() && j>=0 && j<board[0].size() && visted[i][j]==0){
+            if(board[i][j]==word[start]){
+                visted[i][j]=1;
+                start++;
+                if(start==word.size()){ 
+                    ans=true;
+                    return;
+                }
+                for(int k=0;k<4;k++){
+                    dfs(board,word,start,i+direction[k][0],j+direction[k][1],visted);
+                }
+                visted[i][j]=0;
+            }
+            else{
+                return;
+            }
+        }
+        else return;
+    }
+};

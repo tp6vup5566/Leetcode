@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> inDegree(numCourses,0);
+        //建立adjacency list和初始化inDegree
+        for(int i=0;i<prerequisites.size();i++){
+            inDegree[prerequisites[i][0]]++;
+            map[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        //把inDegree為0的元素放到queue
+        for(int i=0;i<numCourses;i++){
+            if(inDegree[i]==0) q.push(i);
+        }
+        while(!q.empty()){
+            int k=q.front();
+            q.pop();
+            for(const auto& value:map[k]){
+                inDegree[value]--;
+                if(inDegree[value]==0) q.push(value);
+            }
+        }
+        //檢查inDegree裡面是否有>0的元素，有的話代表不成立
+        for(int i=0;i<numCourses;i++){
+            if(inDegree[i]!=0) return false;
+        }        
+        return true;
+    }
+private:
+    queue<int> q;
+    unordered_map<int,list<int>> map;
+};
+
+解法:先把prerequisites用adjacency list存起來，然後把in degree記錄起來，接著把in degree為0的都丟到quere裡面遍歷。

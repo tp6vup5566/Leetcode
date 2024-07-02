@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int direction[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        vector<vector<int>> ans;
+        if (heights.empty() || heights[0].empty()) return ans;
+        int m = heights.size(), n = heights[0].size();
+        vector<vector<int>> pacific(m, vector<int>(n, 0));
+        vector<vector<int>> atlantic(m, vector<int>(n, 0));
+        
+        // 遍歷邊界節點進行DFS
+        for (int i = 0; i < m; ++i) {
+            dfs(heights, pacific, i, 0);
+            dfs(heights, atlantic, i, n - 1);
+        }
+        for (int j = 0; j < n; ++j) {
+            dfs(heights, pacific, 0, j);
+            dfs(heights, atlantic, m - 1, j);
+        }
+        
+        // 搜集同時到達太平洋和大西洋的節點
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    ans.push_back({i, j});
+                }
+            }
+        }
+        
+        return ans;
+    }
+
+private:
+    void dfs(vector<vector<int>>& heights, vector<vector<int>>& ocean, int i, int j) {
+        int m = heights.size(), n = heights[0].size();
+        ocean[i][j] = 1;
+        for (int k = 0; k < 4; ++k) {
+            int x = i + direction[k][0], y = j + direction[k][1];
+            if (x >= 0 && x < m && y >= 0 && y < n && !ocean[x][y] && heights[x][y] >= heights[i][j]) {
+                dfs(heights, ocean, x, y);
+            }
+        }
+    }
+};

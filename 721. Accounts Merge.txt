@@ -1,0 +1,63 @@
+class Disjointset{
+public:
+    vector<int> parent;
+    vector<int> height;
+    Disjointset(int n):parent(vector<int>(n)), height(vector<int>(n)){
+        for(int i=0;i<n;i++){
+            parent[i]=i; //初始化每個parent都是自己代表不同集合
+        }
+    }
+
+    int find(int x){
+        if(x!=parent[x]) parent[x]=find(parent[x]);
+        return parent[x];
+    }
+
+    void merge(int x,int y){
+        int rootx=find(x);
+        int rooty=find(y);
+        if(rootx!=rooty){ //代表分別為不同集合
+            if(height[rootx]>height[rooty]){ //希望是高度矮的合併到高的
+                swap(rootx,rooty);
+            }
+            parent[rootx]=rooty;
+            if(height[rootx]==height[rooty]) height[rootx]++; //若相等高度要+1
+        }
+    }
+};
+
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        vector<vector<string>> ans;
+        unordered_map<string,int> map;
+        int n=accounts.size();
+        Disjointset ds(n);
+        //遍歷全部後把有相同郵箱地址的放到同一個set
+        for(int i=0;i<n;i++){
+            int m=accounts[i].size();
+            for(int j=1;j<m;j++){
+                string s=accounts[i][j];
+                if(map.find(s)==map.end()){
+                    map[s]=i;
+                }
+                else{
+                    ds.merge(i,map[s]);
+                }
+            }
+        }
+        unordered_map<int,vector<string>> root_mail; //表示每個root對應到的所有的mail
+        for (auto& [k, v] : map) {
+            root_mail[ds.find(v)].emplace_back(k);
+        }
+        
+        for (auto& [k, v] : root_mail) {
+            sort(v.begin(), v.end());
+            vector<string> tmp(1, accounts[k][0]);
+            tmp.insert(tmp.end(), v.begin(), v.end());
+            ans.emplace_back(tmp);
+        }
+        return ans;
+    }
+};
+
